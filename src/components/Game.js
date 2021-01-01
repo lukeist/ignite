@@ -3,13 +3,33 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import games from "../reducers";
+import { Link, Route, Switch } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { loadDetails } from "../actions/detailsAction";
+
 // console.log(games);
-const Game = ({ name, released, image }) => {
+const Game = ({ name, released, image, id }) => {
+  const dispatch = useDispatch();
+  const loadDetailHandler = () => {
+    dispatch(loadDetails(id));
+  };
+  const idID = `/${id}`;
   return (
-    <StyledGame>
+    <StyledGame onClick={loadDetailHandler}>
       <h3>{name}</h3>
       <p>{released}</p>
-      <img src={image} alt={name} />
+      <Link to={idID}>
+        <img
+          src={image}
+          alt={name}
+          // onClick={() => {
+          //   {
+          //     console.log(id);
+          //     console.log(idID);
+          //   }
+          // }}
+        />
+      </Link>
     </StyledGame>
   );
 };
@@ -20,6 +40,7 @@ const StyledGame = styled(motion.div)`
   text-align: center;
   border-radius: 1rem;
   img {
+    cursor: pointer;
     height: 40vh;
     width: 100%;
     object-fit: cover;
