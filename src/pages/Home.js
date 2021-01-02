@@ -7,7 +7,7 @@ import Game from "../components/Game";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import rootReducer from "../reducers";
-import GameDetails from "./GameDetails";
+import GameDetails from "../components/GameDetails";
 
 const Home = () => {
   // FETCH GAMES
@@ -19,6 +19,7 @@ const Home = () => {
   const { popular, newGames, upcoming } = useSelector((state) => state.games); // extract specific element inside an item, like // import {xxx} from 'yyy';
   return (
     <GameList>
+      <GameDetails />
       <h2>Upcoming Games</h2>
       <Games>
         {upcoming.map((game) => (

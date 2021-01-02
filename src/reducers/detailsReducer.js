@@ -1,5 +1,5 @@
 const initState = {
-  details: {},
+  game: {},
   screenshots: {},
 };
 
@@ -8,7 +8,7 @@ const detailsReducer = (state = initState, action) => {
     case "FETCH_DETAILS":
       return {
         ...state,
-        details: action.payload.detail,
+        game: action.payload.game,
         screenshots: action.payload.screenshots,
       };
     default:

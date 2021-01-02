@@ -1,8 +1,12 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
+// Redux
+import { useSelector } from "react-redux";
 
 const GDetails = ({ name, description }) => {
+  // Data
+  const { details, screenshots } = useSelector((state) => state.details);
   return (
     <StyledgDetails>
       <h3>Name:{name}</h3>
