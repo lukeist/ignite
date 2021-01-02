@@ -4,9 +4,24 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { loadDetails } from "../actions/detailsAction";
 import { motion } from "framer-motion";
-// import { Link } from "react-router-dom";
-
+import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import { smallImage } from "../util";
 const GameDetails = () => {
+  const history = useHistory();
+
+  // exit detail, de scroll lai binh thuong do document.body.style.overflow = "hidden"; ben Game.js
+  const exitDetailHandler = (e) => {
+    const element = e.target; // console.log(element) >> <CardShadow onclilck..>  se thay click o dau no bao vi tri o do cho coi
+    if (element.classList.contains("shadow")) {
+      //onclick vao cai vung co class 'shadow' thi no se thuc hien:
+      // console.log(document.body);
+      document.body.style.overflow = "auto"; // hien lai cai scroll o homepage
+      history.push("/"); // giong <Link to={`/`}> nhung ko phai dung toi <>
+    }
+    // console.log(element.classList.contains("shadow"));
+  };
+  // const [path, setPath] = location.pathname;
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(loadDetails());
@@ -14,16 +29,21 @@ const GameDetails = () => {
   const { game, screenshots, isLoading } = useSelector(
     (state) => state.details
   );
-  console.log(game);
   return (
     <>
       {!isLoading && (
-        <CardShadow>
-          {/* <Exit>
-        <Link to={`/`}>
-          <h1>x</h1>
-        </Link>
-      </Exit> */}
+        <CardShadow
+          className="shadow"
+          onClick={
+            exitDetailHandler
+            // () => history.goBack()
+          }
+        >
+          <Exit>
+            <Link to={`/`}>
+              <h1>x</h1>
+            </Link>
+          </Exit>
           <Detail>
             <Stats>
               <div className="rating">
@@ -41,7 +61,7 @@ const GameDetails = () => {
               </Info>
             </Stats>
             <Media>
-              <img src={game.background_image} alt="game" />
+              <img src={smallImage(game.background_image, 1280)} alt="game" />
             </Media>
             <Description>
               <p>{game.description_raw}</p>
@@ -49,7 +69,14 @@ const GameDetails = () => {
             <div className="gallery">
               {screenshots.results &&
                 screenshots.results.map((screenshot) => (
-                  <img src={screenshot.image} key={screenshot.id} alt="game" />
+                  <img
+                    src={
+                      // screenshot.image
+                      smallImage(screenshot.image, 1280)
+                    }
+                    key={screenshot.id}
+                    alt="game"
+                  />
                 ))}
             </div>
           </Detail>
@@ -95,6 +122,7 @@ const Detail = styled(motion.div)`
   img {
     width: 100%;
   }
+  /* z-index: 10; */
 `;
 
 const Stats = styled(motion.div)`

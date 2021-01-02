@@ -6,11 +6,15 @@ import games from "../reducers";
 import { Link, Route, Switch } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loadDetails } from "../actions/detailsAction";
+import { smallImage } from "../util";
 
 // console.log(games);
 const Game = ({ name, released, image, id }) => {
   const dispatch = useDispatch();
+  // Load Details:
   const loadDetailHandler = () => {
+    // 10. Fetch Game Detail:
+    document.body.style.overflow = "hidden"; // chi scroll cai detail thoi chu ko scroll cai background
     dispatch(loadDetails(id));
   };
   return (
@@ -19,7 +23,7 @@ const Game = ({ name, released, image, id }) => {
         <h3>{name}</h3>
         <p>{released}</p>
         <img
-          src={image}
+          src={smallImage(image, 640)}
           alt={name}
           // onClick={() => {
           //   {
@@ -39,7 +43,7 @@ const StyledGame = styled(motion.div)`
   text-align: center;
   border-radius: 1rem;
   cursor: pointer;
-
+  overflow: hidden;
   img {
     height: 40vh;
     width: 100%;
