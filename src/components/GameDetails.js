@@ -4,46 +4,58 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { loadDetails } from "../actions/detailsAction";
 import { motion } from "framer-motion";
+// import { Link } from "react-router-dom";
 
 const GameDetails = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(loadDetails());
   }, [dispatch]);
-  const { game, screenshots } = useSelector((state) => state.details);
+  const { game, screenshots, isLoading } = useSelector(
+    (state) => state.details
+  );
+  console.log(game);
   return (
-    <CardShadow>
-      <Detail>
-        <Stats>
-          <div className="rating">
-            <h3>{game.name}</h3>
-            <p>Rating: {game.rating}</p>
-          </div>
-          <Info>
-            <h3>Platforms</h3>
-            <Platforms>
-              {game.platforms &&
-                game.platforms.map((data) => (
-                  <h3 key={data.platform.id}>{data.platform.name}</h3>
+    <>
+      {!isLoading && (
+        <CardShadow>
+          {/* <Exit>
+        <Link to={`/`}>
+          <h1>x</h1>
+        </Link>
+      </Exit> */}
+          <Detail>
+            <Stats>
+              <div className="rating">
+                <h3>{game.name}</h3>
+                <p>Rating: {game.rating}</p>
+              </div>
+              <Info>
+                <h3>Platforms</h3>
+                <Platforms>
+                  {game.platforms &&
+                    game.platforms.map((data) => (
+                      <h3 key={data.platform.id}>{data.platform.name}</h3>
+                    ))}
+                </Platforms>
+              </Info>
+            </Stats>
+            <Media>
+              <img src={game.background_image} alt="game" />
+            </Media>
+            <Description>
+              <p>{game.description_raw}</p>
+            </Description>
+            <div className="gallery">
+              {screenshots.results &&
+                screenshots.results.map((screenshot) => (
+                  <img src={screenshot.image} key={screenshot.id} alt="game" />
                 ))}
-            </Platforms>
-          </Info>
-        </Stats>
-        <Media>
-          <img src={game.background_image} alt="game" />
-        </Media>
-        <Description>
-          <p>{game.description_raw}</p>
-        </Description>
-        <div className="gallery">
-          {screenshots.results &&
-            screenshots.results.map((screenshot) => (
-              <img src={screenshot.image} key={screenshot.id} alt="game" />
-            ))}
-        </div>
-      </Detail>
-    </CardShadow>
-
+            </div>
+          </Detail>
+        </CardShadow>
+      )}
+    </>
     // <DetailsList>
     //   <h2>Details of a Game!</h2>
     //   <GDetails name={game.name} description={game.description} />
@@ -78,6 +90,7 @@ const Detail = styled(motion.div)`
   position: absolute;
   top: 5%;
   left: 10%;
+  /* bottom: 5%; */
   color: black;
   img {
     width: 100%;
@@ -113,4 +126,14 @@ const Media = styled(motion.div)`
 const Description = styled(motion.div)`
   margin: 5rem 0rem;
 `;
+
+const Exit = styled(motion.div)`
+  padding: 0.5rem 0.5rem;
+  border-radius: 0rem;
+  background: black;
+  color: white;
+  display: flex;
+  justify-content: flex-end;
+`;
+
 export default GameDetails;

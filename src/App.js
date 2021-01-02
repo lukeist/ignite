@@ -11,7 +11,9 @@ function App() {
       <GlobalStyles />
       {/* <Switch> */}
       {/* <Route path="/" exact> */}
-      <Home />
+      <Route path={["/games/:id", "/"]}>
+        <Home />
+      </Route>
       {/* </Route> */}
       {/* <Route path="/:id">
           <GameDetails />
