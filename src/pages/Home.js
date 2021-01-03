@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 //Redux
 import { useDispatch, useSelector } from "react-redux";
-import { loadGames } from "../actions/gamesAction";
+import { loadGames, clearSearch } from "../actions/gamesAction";
 import Game from "../components/Game";
 // Styling and Animation
 import styled from "styled-components";
@@ -21,7 +21,14 @@ const Home = () => {
     dispatch(loadGames());
   }, [dispatch]);
   // Get that data back
-  const { popular, newGames, upcoming } = useSelector((state) => state.games); // extract specific element inside an item, like // import {xxx} from 'yyy';
+  const { popular, newGames, upcoming, searched } = useSelector(
+    (state) => state.games
+  );
+  const clearResult = () => {
+    dispatch(clearSearch());
+  };
+  // extract specific element inside an item, like // import {xxx} from 'yyy';
+  // console.log( searched.length);
   return (
     <GameList>
       {/* <AnimateSharedLayout type="crossfade"> */}
@@ -32,7 +39,29 @@ const Home = () => {
       {/* push pathId down to GameDetails <CardShadow> throgh props: */}
       {pathId && <GameDetails pathId={pathId} />}
       {/* </AnimatePresence> */}
+      {searched.length ? ( // if searched.length = 0 (empty array) = false >> give '' ; otherwise give <div>
+        <div className="search">
+          <SearchTitle>
+            <h2>Search Results</h2>
+            <button onClick={clearResult}>Clear Search</button>
+          </SearchTitle>
+          <Games>
+            {searched.map((game) => (
+              <Game
+                name={game.name}
+                released={game.released}
+                id={game.id}
+                image={game.background_image}
+                key={game.id}
+              />
+            ))}
+          </Games>
+        </div>
+      ) : (
+        ""
+      )}
       <h2>Upcoming Games</h2>
+
       <Games>
         {upcoming.map((game) => (
           <Game
@@ -94,4 +123,23 @@ const Games = styled(motion.div)`
   grid-row-gap: 3rem;
 `;
 
+const SearchTitle = styled(motion.div)`
+  display: flex;
+  justify-content: space-between;
+  button {
+    border: 1;
+    padding: 0rem 2rem;
+    color: #ff7676;
+    font-size: 2rem;
+    background: white;
+    cursor: pointer;
+    border-radius: 1rem;
+    border-color: #ff7676;
+    :hover {
+      background: #ff7676;
+      color: white;
+      transition: ease 0.5s;
+    }
+  }
+`;
 export default Home;

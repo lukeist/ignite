@@ -1,20 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 //Animation
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import logo from "../img/logo.svg";
+// Redux and Routes
+import { fetchSearch } from "../actions/gamesAction";
+import { useDispatch } from "react-redux";
 
 const Nav = () => {
+  const dispatch = useDispatch();
+  const [sInput, setSInput] = useState("");
+  const searchInput = (e) => {
+    setSInput(e.target.value);
+    // console.log(sInput);
+  };
+  const searchResults = (e) => {
+    e.preventDefault(); //<<<<<<<<<<<<<<<< Ngan ko cho <form> line 31 refresh vi ko nhap duoc gi het.
+    dispatch(fetchSearch(sInput));
+    setSInput("");
+    // searchGameURL(sInput)
+  };
+
+  //   dispatch(fetchSearch(searchGameURL(sInput)));
   return (
     <StyledNav>
       <Logo>
         <img src={logo} alt="logo" />
         <h1>Ignite</h1>
       </Logo>
-      <div className="search">
-        <input type="text" />
-        <button>Search</button>
-      </div>
+      <form className="search">
+        <input type="text" value={sInput} onChange={searchInput} />
+        <button type="submit" onClick={searchResults}>
+          Search
+        </button>
+      </form>
     </StyledNav>
   );
 };
