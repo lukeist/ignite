@@ -7,97 +7,157 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { smallImage } from "../util";
-const GameDetails = ({ pathId }) => {
-  // declare pathId to pass it down here ^^^
-  const history = useHistory();
-  // console.log(pathId);
+// IMAGES
+import playstation from "../img/playstation.svg";
+import steam from "../img/steam.svg";
+import xbox from "../img/xbox.svg";
+import nintendo from "../img/nintendo.svg";
+import apple from "../img/apple.svg";
+import gamepad from "../img/gamepad.svg";
 
-  // exit detail, de scroll lai binh thuong do document.body.style.overflow = "hidden"; ben Game.js
-  const exitDetailHandler = (e) => {
-    const element = e.target; // console.log(element) >> <CardShadow onclilck..>  se thay click o dau no bao vi tri o do cho coi
-    if (element.classList.contains("shadow")) {
-      //onclick vao cai vung co class 'shadow' thi no se thuc hien:
-      // console.log(document.body);
-      document.body.style.overflow = "auto"; // hien lai cai scroll o homepage
-      history.push("/"); // giong <Link to={`/`}> nhung ko phai dung toi <>
-    }
-    // console.log(element.classList.contains("shadow"));
-  };
-  // const [path, setPath] = location.pathname;
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(loadDetails());
-  }, [dispatch]);
-  const { game, screenshots, isLoading } = useSelector(
-    (state) => state.details
-  );
-  return (
-    <>
-      {!isLoading && (
-        <CardShadow
-          // props pathId from Home.js
-          layoutId={pathId}
-          className="shadow"
-          onClick={
-            exitDetailHandler
-            // () => history.goBack()
-          }
-        >
-          <Exit>
-            <Link to={`/`}>
-              <h1>x</h1>
-            </Link>
-          </Exit>
-          <Detail>
-            <Stats>
-              <div className="rating">
-                <motion.h3 layoutId={`title ${pathId}`}>{game.name}</motion.h3>
-                <p>Rating: {game.rating}</p>
+const GameDetails = () =>
+  // { pathId }
+  {
+    // Get platforms images
+    //cach 1
+    const getPlatform1 = (platform) => {
+      switch (platform) {
+        case "PlayStation 4":
+          return playstation;
+        case "PlayStation 5":
+          return playstation;
+        case "Xbox Series S/X":
+          return xbox;
+        case "Xbox S":
+          return xbox;
+        case "Xbox One":
+          return xbox;
+        case "Nintendo Switch":
+          return nintendo;
+        case "PC":
+          return steam;
+        case "iOS":
+          return apple;
+        default:
+          return gamepad;
+      }
+    };
+    //cach 2
+    const getPlatform2 = (platform) => {
+      return (
+        {
+          "PlayStation 4": playstation,
+          "PlayStation 5": playstation,
+          "Xbox Series S/X": xbox,
+          "Xbox S": xbox,
+          "Xbox One": xbox,
+          "Nintendo Switch": nintendo,
+          PC: steam,
+          iOS: apple,
+        }[platform] || gamepad
+      );
+    };
+    // declare pathId to pass it down here ^^^
+    const history = useHistory();
+    // console.log(pathId);
+
+    // exit detail, de scroll lai binh thuong do document.body.style.overflow = "hidden"; ben Game.js
+    const exitDetailHandler = (e) => {
+      const element = e.target; // console.log(element) >> <CardShadow onclilck..>  se thay click o dau no bao vi tri o do cho coi
+      if (element.classList.contains("shadow")) {
+        //onclick vao cai vung co class 'shadow' thi no se thuc hien:
+        // console.log(document.body);
+        document.body.style.overflow = "auto"; // hien lai cai scroll o homepage
+        history.push("/"); // giong <Link to={`/`}> nhung ko phai dung toi <>
+      }
+      // console.log(element.classList.contains("shadow"));
+    };
+    // const [path, setPath] = location.pathname;
+    const dispatch = useDispatch();
+    useEffect(() => {
+      dispatch(loadDetails());
+    }, [dispatch]);
+    const { game, screenshots, isLoading } = useSelector(
+      (state) => state.details
+    );
+    return (
+      <>
+        {!isLoading && (
+          <CardShadow
+            // props pathId from Home.js
+            // layoutId={pathId}
+            className="shadow"
+            onClick={
+              exitDetailHandler
+              // () => history.goBack()
+            }
+          >
+            <Exit>
+              <Link to={`/`}>
+                <h1>x</h1>
+              </Link>
+            </Exit>
+            <Detail>
+              <Stats>
+                <div className="rating">
+                  <motion.h3
+                  // layoutId={`title ${pathId}`}
+                  >
+                    {game.name}
+                  </motion.h3>
+                  <p>Rating: {game.rating}</p>
+                </div>
+                <Info>
+                  <h3>Platforms</h3>
+                  <Platforms>
+                    {game.platforms &&
+                      game.platforms.map((data) => (
+                        // <h3 key={data.platform.id}>
+                        //   {getPlatform(data.platform.name)}
+                        //   </h3>
+                        <img
+                          key={data.platform.id}
+                          src={getPlatform2(data.platform.name)}
+                          alt={getPlatform2(data.platform.name)}
+                        />
+                      ))}
+                  </Platforms>
+                </Info>
+              </Stats>
+              <Media>
+                <motion.img
+                  // same layoutId in Game.js
+                  // layoutId={`image ${pathId}`}
+                  src={smallImage(game.background_image, 1280)}
+                  alt="game"
+                />
+              </Media>
+              <Description>
+                <p>{game.description_raw}</p>
+              </Description>
+              <div className="gallery">
+                {screenshots.results &&
+                  screenshots.results.map((screenshot) => (
+                    <img
+                      src={
+                        // screenshot.image
+                        smallImage(screenshot.image, 1280)
+                      }
+                      key={screenshot.id}
+                      alt="game"
+                    />
+                  ))}
               </div>
-              <Info>
-                <h3>Platforms</h3>
-                <Platforms>
-                  {game.platforms &&
-                    game.platforms.map((data) => (
-                      <h3 key={data.platform.id}>{data.platform.name}</h3>
-                    ))}
-                </Platforms>
-              </Info>
-            </Stats>
-            <Media>
-              <motion.img
-                // same layoutId in Game.js
-                layoutId={`image ${pathId}`}
-                src={smallImage(game.background_image, 1280)}
-                alt="game"
-              />
-            </Media>
-            <Description>
-              <p>{game.description_raw}</p>
-            </Description>
-            <div className="gallery">
-              {screenshots.results &&
-                screenshots.results.map((screenshot) => (
-                  <img
-                    src={
-                      // screenshot.image
-                      smallImage(screenshot.image, 1280)
-                    }
-                    key={screenshot.id}
-                    alt="game"
-                  />
-                ))}
-            </div>
-          </Detail>
-        </CardShadow>
-      )}
-    </>
-    // <DetailsList>
-    //   <h2>Details of a Game!</h2>
-    //   <GDetails name={game.name} description={game.description} />
-    // </DetailsList>
-  );
-};
+            </Detail>
+          </CardShadow>
+        )}
+      </>
+      // <DetailsList>
+      //   <h2>Details of a Game!</h2>
+      //   <GDetails name={game.name} description={game.description} />
+      // </DetailsList>
+    );
+  };
 
 const CardShadow = styled(motion.div)`
   width: 100%;
@@ -107,6 +167,7 @@ const CardShadow = styled(motion.div)`
   position: fixed;
   top: 0;
   left: 0;
+  z-index: 5;
   &::-webkit-scrollbar {
     width: 0.5rem;
   }

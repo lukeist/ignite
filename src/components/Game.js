@@ -20,13 +20,20 @@ const Game = ({ name, released, image, id }) => {
   };
   return (
     // add id here for animating, because id is a # type so we have to set it to string to match with the other one
-    <StyledGame layoutId={`title ${stringPathId}`} onClick={loadDetailHandler}>
+    <StyledGame
+      // layoutId={`title ${stringPathId}`}
+      onClick={loadDetailHandler}
+    >
       <Link to={`/games/${id}`}>
-        <motion.h3 layoutId={stringPathId}>{name}</motion.h3>
+        <motion.h3
+        // layoutId={stringPathId}
+        >
+          {name}
+        </motion.h3>
         <p>{released}</p>
         <motion.img
           // same layoutId in GameDetails.js
-          layoutId={`image ${stringPathId}`}
+          // layoutId={`image ${stringPathId}`}
           src={smallImage(image, 640)}
           alt={name}
           // onClick={() => {
