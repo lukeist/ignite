@@ -10,6 +10,7 @@ import { smallImage } from "../util";
 
 // console.log(games);
 const Game = ({ name, released, image, id }) => {
+  const stringPathId = id.toString();
   const dispatch = useDispatch();
   // Load Details:
   const loadDetailHandler = () => {
@@ -18,11 +19,14 @@ const Game = ({ name, released, image, id }) => {
     dispatch(loadDetails(id));
   };
   return (
-    <StyledGame onClick={loadDetailHandler}>
+    // add id here for animating, because id is a # type so we have to set it to string to match with the other one
+    <StyledGame layoutId={`title ${stringPathId}`} onClick={loadDetailHandler}>
       <Link to={`/games/${id}`}>
-        <h3>{name}</h3>
+        <motion.h3 layoutId={stringPathId}>{name}</motion.h3>
         <p>{released}</p>
-        <img
+        <motion.img
+          // same layoutId in GameDetails.js
+          layoutId={`image ${stringPathId}`}
           src={smallImage(image, 640)}
           alt={name}
           // onClick={() => {

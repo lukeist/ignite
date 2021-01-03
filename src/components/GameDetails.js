@@ -7,8 +7,10 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { smallImage } from "../util";
-const GameDetails = () => {
+const GameDetails = ({ pathId }) => {
+  // declare pathId to pass it down here ^^^
   const history = useHistory();
+  // console.log(pathId);
 
   // exit detail, de scroll lai binh thuong do document.body.style.overflow = "hidden"; ben Game.js
   const exitDetailHandler = (e) => {
@@ -33,6 +35,8 @@ const GameDetails = () => {
     <>
       {!isLoading && (
         <CardShadow
+          // props pathId from Home.js
+          layoutId={pathId}
           className="shadow"
           onClick={
             exitDetailHandler
@@ -47,7 +51,7 @@ const GameDetails = () => {
           <Detail>
             <Stats>
               <div className="rating">
-                <h3>{game.name}</h3>
+                <motion.h3 layoutId={`title ${pathId}`}>{game.name}</motion.h3>
                 <p>Rating: {game.rating}</p>
               </div>
               <Info>
@@ -61,7 +65,12 @@ const GameDetails = () => {
               </Info>
             </Stats>
             <Media>
-              <img src={smallImage(game.background_image, 1280)} alt="game" />
+              <motion.img
+                // same layoutId in Game.js
+                layoutId={`image ${pathId}`}
+                src={smallImage(game.background_image, 1280)}
+                alt="game"
+              />
             </Media>
             <Description>
               <p>{game.description_raw}</p>
