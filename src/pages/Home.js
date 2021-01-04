@@ -9,6 +9,7 @@ import { motion, AnimatePresence, AnimateSharedLayout } from "framer-motion";
 import rootReducer from "../reducers";
 import GameDetails from "../components/GameDetails";
 import { useLocation } from "react-router-dom";
+import { fadeIn } from "../components/animation";
 const Home = () => {
   //get the current location:
   const location = useLocation();
@@ -30,7 +31,7 @@ const Home = () => {
   // extract specific element inside an item, like // import {xxx} from 'yyy';
   // console.log( searched.length);
   return (
-    <GameList>
+    <GameList variants={fadeIn} initial="hidden" animate="show">
       {/* <AnimateSharedLayout type="crossfade"> */}
       {/* <AnimatePresence> */}
       {/* BOTH OF THE THINGS YOU WANT A TRANSITION SHOULD HAVE THE SAME layoutid: Game & GameDetails */}

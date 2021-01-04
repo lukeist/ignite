@@ -7,7 +7,7 @@ import { Link, Route, Switch } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loadDetails } from "../actions/detailsAction";
 import { smallImage } from "../util";
-
+import { popUp } from "../components/animation";
 // console.log(games);
 const Game = ({ name, released, image, id }) => {
   const stringPathId = id.toString();
@@ -21,6 +21,9 @@ const Game = ({ name, released, image, id }) => {
   return (
     // add id here for animating, because id is a # type so we have to set it to string to match with the other one
     <StyledGame
+      variants={popUp}
+      initial="hidden"
+      animate="show"
       // layoutId={`title ${stringPathId}`}
       onClick={loadDetailHandler}
     >
